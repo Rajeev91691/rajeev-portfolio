@@ -281,9 +281,12 @@ function DevTerminal() {
 
   useEffect(() => {
     if (shellRef.current) {
-      shellRef.current.scrollTop = shellRef.current.scrollHeight;
+      const shell = shellRef.current;
+      requestAnimationFrame(() => {
+        shell.scrollTop = shell.scrollHeight;
+      });
     }
-  }, [terminalHistory, isMinimized]);
+  }, [terminalHistory, isMinimized, currentInput, isTyping]);
 
   const runCommand = (cmd: string) => {
     if (isTyping) return;
@@ -317,41 +320,41 @@ function DevTerminal() {
           <div className="grid grid-cols-12 gap-2 items-center">
             <span className="col-span-3 text-white/40 text-[9px]">SEM_01:</span>
             <div className="col-span-7 h-1.5 bg-white/[0.04] rounded overflow-hidden">
-              <div className="h-full bg-[#3A96DD]" style={{ width: "86%" }} />
+              <div className="h-full bg-[#16C60C]" style={{ width: "86%" }} />
             </div>
-            <span className="col-span-2 text-right text-[#3A96DD] font-semibold">8.60</span>
+            <span className="col-span-2 text-right text-[#16C60C] font-semibold">8.60</span>
           </div>
 
           <div className="grid grid-cols-12 gap-2 items-center">
             <span className="col-span-3 text-white/40 text-[9px]">SEM_02:</span>
             <div className="col-span-7 h-1.5 bg-white/[0.04] rounded overflow-hidden">
-              <div className="h-full bg-[#3A96DD]" style={{ width: "93.8%" }} />
+              <div className="h-full bg-[#16C60C]" style={{ width: "93.8%" }} />
             </div>
-            <span className="col-span-2 text-right text-[#3A96DD] font-semibold">9.38</span>
+            <span className="col-span-2 text-right text-[#16C60C] font-semibold">9.38</span>
           </div>
 
           <div className="grid grid-cols-12 gap-2 items-center">
             <span className="col-span-3 text-white/40 text-[9px]">SEM_03:</span>
             <div className="col-span-7 h-1.5 bg-white/[0.04] rounded overflow-hidden">
-              <div className="h-full bg-[#3A96DD]" style={{ width: "93%" }} />
+              <div className="h-full bg-[#16C60C]" style={{ width: "93%" }} />
             </div>
-            <span className="col-span-2 text-right text-[#3A96DD] font-semibold">9.30</span>
+            <span className="col-span-2 text-right text-[#16C60C] font-semibold">9.30</span>
           </div>
 
           <div className="grid grid-cols-12 gap-2 items-center">
             <span className="col-span-3 text-white/40 text-[9px]">SEM_04:</span>
             <div className="col-span-7 h-1.5 bg-white/[0.04] rounded overflow-hidden">
-              <div className="h-full bg-[#3A96DD]" style={{ width: "93.8%" }} />
+              <div className="h-full bg-[#16C60C]" style={{ width: "93.8%" }} />
             </div>
-            <span className="col-span-2 text-right text-[#3A96DD] font-semibold">9.38</span>
+            <span className="col-span-2 text-right text-[#16C60C] font-semibold">9.38</span>
           </div>
 
           <div className="grid grid-cols-12 gap-2 items-center">
             <span className="col-span-3 text-white/40 text-[9px]">SEM_05:</span>
             <div className="col-span-7 h-1.5 bg-white/[0.04] rounded overflow-hidden">
-              <div className="h-full bg-[#3A96DD]" style={{ width: "91.7%" }} />
+              <div className="h-full bg-[#16C60C]" style={{ width: "91.7%" }} />
             </div>
-            <span className="col-span-2 text-right text-[#3A96DD] font-semibold">9.17</span>
+            <span className="col-span-2 text-right text-[#16C60C] font-semibold">9.17</span>
           </div>
 
           <div className="grid grid-cols-12 gap-2 items-center">

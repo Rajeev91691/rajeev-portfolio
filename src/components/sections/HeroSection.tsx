@@ -131,8 +131,8 @@ export default function HeroSection() {
         rightPanel.style.opacity = String(Math.max(0, 1 - progress * 3.5));
         rightPanel.style.transform = `translateY(${progress * 20}px)`;
 
-        // Fade background video frames (canvas) smoothly only at the very end of the scroll scrub
-        const canvasOpacity = progress < 0.7 ? 1 : Math.max(0, (1 - progress) / 0.3);
+        // Fade background video frames (canvas) smoothly only at the very end of the scroll scrub (past 80% progress)
+        const canvasOpacity = progress < 0.8 ? 1 : Math.max(0, (1 - progress) / 0.2);
         canvas.style.opacity = String(canvasOpacity);
 
         const scrollFade = Math.min(1, (progress - 0.35) / 0.35);
@@ -177,8 +177,8 @@ export default function HeroSection() {
         <div ref={leftPanelRef} className="w-full md:w-1/2 space-y-4 flex flex-col items-start justify-center">
 
           {/* Name */}
-          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4.2rem] 2xl:text-[4.8rem] font-bold text-foreground leading-[1.05] tracking-tight">
-            <TextScramble text="Rajeev Nandan" />
+          <h1 className="font-display text-3xl sm:text-4xl md:text-[2.8rem] lg:text-[3.2rem] xl:text-[3.8rem] 2xl:text-[4.4rem] font-bold text-foreground leading-[1.05] tracking-tight">
+            <TextScramble text="Rajeev&nbsp;Nandan" />
           </h1>
 
           {/* Primary title */}
