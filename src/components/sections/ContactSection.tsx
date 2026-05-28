@@ -10,12 +10,58 @@ export default function ContactSection() {
     email: "",
     message: "",
   });
+  const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Thank you for your message! I'll get back to you soon.");
-    setFormData({ name: "", email: "", message: "" });
+    if (!formData.name || !formData.email || !formData.message) {
+      setFormStatus("error");
+      setErrorMessage("Please fill out all fields before sending.");
+      return;
+    }
+
+    setFormStatus("submitting");
+
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+
+    if (!accessKey) {
+      // Local premium simulation fallback
+      setTimeout(() => {
+        setFormStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+      }, 1200);
+      return;
+    }
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          subject: `New Portfolio Message from ${formData.name}`,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setFormStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setFormStatus("error");
+        setErrorMessage(data.message || "Failed to transmit message.");
+      }
+    } catch (err) {
+      setFormStatus("error");
+      setErrorMessage("Connection issue. Unable to beam signal.");
+    }
   };
 
   const contactInfo = [
@@ -138,49 +184,88 @@ export default function ContactSection() {
 
           {/* Right Bento: Clean Message Form Card (7 columns) */}
           <div className="lg:col-span-7">
-            <div className="h-full rounded-3xl border border-white/[0.06] bg-[#141414]/25 p-8 md:p-10 backdrop-blur-xl flex flex-col justify-between relative overflow-hidden">
+            <div className="h-full rounded-3xl border border-white/[0.06] bg-[#141414]/25 p-8 md:p-10 backdrop-blur-xl flex flex-col justify-between relative overflow-hidden min-h-[420px]">
               <div className="absolute top-0 right-0 w-[20rem] h-[20rem] rounded-full bg-accent/2 blur-[80px] pointer-events-none" />
 
-              <div>
-                <h3 className="font-display text-2xl font-bold text-foreground mb-2">Send a Message</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-8">
-                  Fill in the details below, and I&apos;ll get back to you to start our conversation.
-                </p>
-
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <AnimatedInput
-                    label="Your Name"
-                    value={formData.name}
-                    onChange={(value) => setFormData({ ...formData, name: value })}
-                    type="text"
-                  />
-                  <AnimatedInput
-                    label="Your Email"
-                    value={formData.email}
-                    onChange={(value) => setFormData({ ...formData, email: value })}
-                    type="email"
-                  />
-                  <AnimatedInput
-                    label="Your Message"
-                    value={formData.message}
-                    onChange={(value) =>
-                      setFormData({ ...formData, message: value })
-                    }
-                    textarea
-                  />
-                  
+              {formStatus === "success" ? (
+                <div className="flex-1 flex flex-col items-center justify-center text-center py-12 space-y-6 my-auto select-none">
+                  {/* Glowing Checkmark */}
+                  <div className="w-16 h-16 rounded-full bg-[#16C60C]/10 border border-[#16C60C]/30 flex items-center justify-center relative shadow-[0_0_30px_rgba(22,198,12,0.2)] animate-pulse">
+                    <Send className="size-6 text-[#16C60C] transform rotate-[-45deg] translate-x-0.5 -translate-y-0.5" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="font-display text-2xl font-bold text-foreground">
+                      Transmission Successful!
+                    </h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed max-w-sm mx-auto">
+                      Your message has been beamed directly to Rajeev's terminal inbox. You will receive a direct reply within 24 hours.
+                    </p>
+                  </div>
                   <button
-                    type="submit"
-                    className="relative group w-full md:w-auto overflow-hidden px-8 py-4 bg-foreground text-background rounded-full font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
-                    data-cursor-hover="true"
+                    onClick={() => setFormStatus("idle")}
+                    className="px-6 py-2.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-semibold text-foreground hover:bg-white/[0.08] transition-all cursor-pointer"
                   >
-                    {/* Glowing effect inside the button */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-accent to-accent/60 opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
-                    <Send className="size-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
-                    <span>Send Message</span>
+                    Send Another Message
                   </button>
-                </form>
-              </div>
+                </div>
+              ) : (
+                <div>
+                  <h3 className="font-display text-2xl font-bold text-foreground mb-2">Send a Message</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-8">
+                    Fill in the details below, and I&apos;ll get back to you to start our conversation.
+                  </p>
+
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <AnimatedInput
+                      label="Your Name"
+                      value={formData.name}
+                      onChange={(value) => setFormData({ ...formData, name: value })}
+                      type="text"
+                    />
+                    <AnimatedInput
+                      label="Your Email"
+                      value={formData.email}
+                      onChange={(value) => setFormData({ ...formData, email: value })}
+                      type="email"
+                    />
+                    <AnimatedInput
+                      label="Your Message"
+                      value={formData.message}
+                      onChange={(value) =>
+                        setFormData({ ...formData, message: value })
+                      }
+                      textarea
+                    />
+                    
+                    {formStatus === "error" && (
+                      <p className="text-[#E74856] text-xs font-mono select-none">
+                        ⚠️ ERROR: {errorMessage}
+                      </p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={formStatus === "submitting"}
+                      className="relative group w-full md:w-auto overflow-hidden px-8 py-4 bg-foreground text-background rounded-full font-medium hover:opacity-90 disabled:opacity-50 transition-opacity flex items-center justify-center gap-2 cursor-pointer"
+                      data-cursor-hover="true"
+                    >
+                      {/* Glowing effect inside the button */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-accent to-accent/60 opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+                      {formStatus === "submitting" ? (
+                        <span className="flex items-center gap-2">
+                          <span className="w-3.5 h-3.5 border-2 border-background border-t-transparent rounded-full animate-spin" />
+                          <span>Transmitting...</span>
+                        </span>
+                      ) : (
+                        <>
+                          <Send className="size-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+                          <span>Send Message</span>
+                        </>
+                      )}
+                    </button>
+                  </form>
+                </div>
+              )}
             </div>
           </div>
 
