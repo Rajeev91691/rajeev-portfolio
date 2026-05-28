@@ -277,7 +277,9 @@ function DevTerminal() {
   ]);
   const [currentInput, setCurrentInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [userInput, setUserInput] = useState("");
   const shellRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (shellRef.current) {
@@ -286,7 +288,15 @@ function DevTerminal() {
         shell.scrollTop = shell.scrollHeight;
       });
     }
-  }, [terminalHistory, isMinimized, currentInput, isTyping]);
+  }, [terminalHistory, isMinimized, currentInput, isTyping, userInput]);
+
+  const handleInputSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = userInput.trim();
+    if (!trimmed) return;
+    executeCommand(trimmed);
+    setUserInput("");
+  };
 
   const runCommand = (cmd: string) => {
     if (isTyping) return;
@@ -314,55 +324,55 @@ function DevTerminal() {
 
     if (normalizedCmd === "get-content gpa.txt" || normalizedCmd === "cat gpa.txt") {
       output = (
-        <div className="space-y-2.5 font-mono text-[10px] text-[#CCCCCC]">
-          <div className="text-[#F9F1A5] font-extrabold tracking-wider border-b border-white/[0.06] pb-1 select-none">TELEMETRY: GPA PROGRESS ARCHIVES</div>
+        <div className="space-y-2 font-mono text-[10px] text-[#CCCCCC]">
+          <div className="text-[#F9F1A5] font-extrabold tracking-wider border-b border-white/[0.06] pb-1.5 select-none">TELEMETRY: GPA PROGRESS ARCHIVES</div>
           
-          <div className="grid grid-cols-12 gap-2 items-center">
-            <span className="col-span-3 text-white/40 text-[9px]">SEM_01:</span>
-            <div className="col-span-7 h-1.5 bg-white/[0.04] rounded overflow-hidden">
-              <div className="h-full bg-[#16C60C]" style={{ width: "86%" }} />
-            </div>
-            <span className="col-span-2 text-right text-[#16C60C] font-semibold">8.60</span>
+          <div className="flex items-center gap-4">
+            <span className="text-white/40 text-[9px] w-12 select-none">SEM_01:</span>
+            <span className="text-[#16C60C] font-bold tracking-widest text-xs select-none">
+              ■■■■■■■■<span className="text-white/10">■■</span>
+            </span>
+            <span className="text-right text-[#16C60C] font-semibold text-[10px] ml-auto">8.60</span>
           </div>
 
-          <div className="grid grid-cols-12 gap-2 items-center">
-            <span className="col-span-3 text-white/40 text-[9px]">SEM_02:</span>
-            <div className="col-span-7 h-1.5 bg-white/[0.04] rounded overflow-hidden">
-              <div className="h-full bg-[#16C60C]" style={{ width: "93.8%" }} />
-            </div>
-            <span className="col-span-2 text-right text-[#16C60C] font-semibold">9.38</span>
+          <div className="flex items-center gap-4">
+            <span className="text-white/40 text-[9px] w-12 select-none">SEM_02:</span>
+            <span className="text-[#16C60C] font-bold tracking-widest text-xs select-none">
+              ■■■■■■■■■<span className="text-white/10">■</span>
+            </span>
+            <span className="text-right text-[#16C60C] font-semibold text-[10px] ml-auto">9.38</span>
           </div>
 
-          <div className="grid grid-cols-12 gap-2 items-center">
-            <span className="col-span-3 text-white/40 text-[9px]">SEM_03:</span>
-            <div className="col-span-7 h-1.5 bg-white/[0.04] rounded overflow-hidden">
-              <div className="h-full bg-[#16C60C]" style={{ width: "93%" }} />
-            </div>
-            <span className="col-span-2 text-right text-[#16C60C] font-semibold">9.30</span>
+          <div className="flex items-center gap-4">
+            <span className="text-white/40 text-[9px] w-12 select-none">SEM_03:</span>
+            <span className="text-[#16C60C] font-bold tracking-widest text-xs select-none">
+              ■■■■■■■■■<span className="text-white/10">■</span>
+            </span>
+            <span className="text-right text-[#16C60C] font-semibold text-[10px] ml-auto">9.30</span>
           </div>
 
-          <div className="grid grid-cols-12 gap-2 items-center">
-            <span className="col-span-3 text-white/40 text-[9px]">SEM_04:</span>
-            <div className="col-span-7 h-1.5 bg-white/[0.04] rounded overflow-hidden">
-              <div className="h-full bg-[#16C60C]" style={{ width: "93.8%" }} />
-            </div>
-            <span className="col-span-2 text-right text-[#16C60C] font-semibold">9.38</span>
+          <div className="flex items-center gap-4">
+            <span className="text-white/40 text-[9px] w-12 select-none">SEM_04:</span>
+            <span className="text-[#16C60C] font-bold tracking-widest text-xs select-none">
+              ■■■■■■■■■<span className="text-white/10">■</span>
+            </span>
+            <span className="text-right text-[#16C60C] font-semibold text-[10px] ml-auto">9.38</span>
           </div>
 
-          <div className="grid grid-cols-12 gap-2 items-center">
-            <span className="col-span-3 text-white/40 text-[9px]">SEM_05:</span>
-            <div className="col-span-7 h-1.5 bg-white/[0.04] rounded overflow-hidden">
-              <div className="h-full bg-[#16C60C]" style={{ width: "91.7%" }} />
-            </div>
-            <span className="col-span-2 text-right text-[#16C60C] font-semibold">9.17</span>
+          <div className="flex items-center gap-4">
+            <span className="text-white/40 text-[9px] w-12 select-none">SEM_05:</span>
+            <span className="text-[#16C60C] font-bold tracking-widest text-xs select-none">
+              ■■■■■■■■■<span className="text-white/10">■</span>
+            </span>
+            <span className="text-right text-[#16C60C] font-semibold text-[10px] ml-auto">9.17</span>
           </div>
 
-          <div className="grid grid-cols-12 gap-2 items-center">
-            <span className="col-span-3 text-white/40 text-[9px]">SEM_06:</span>
-            <div className="col-span-7 h-1.5 bg-white/[0.04] rounded overflow-hidden">
-              <div className="h-full bg-white animate-pulse" style={{ width: "97.3%" }} />
-            </div>
-            <span className="col-span-2 text-right text-white font-bold">9.73</span>
+          <div className="flex items-center gap-4">
+            <span className="text-white/40 text-[9px] w-12 select-none">SEM_06:</span>
+            <span className="text-white font-bold tracking-widest text-xs select-none animate-pulse">
+              ■■■■■■■■■■
+            </span>
+            <span className="text-right text-white font-bold text-[10px] ml-auto">9.73</span>
           </div>
 
           <div className="text-white/50 border-t border-white/[0.06] pt-2 flex justify-between items-center select-none">
@@ -441,6 +451,17 @@ function DevTerminal() {
           </div>
         </div>
       );
+    } else if (normalizedCmd === "help" || normalizedCmd === "h" || normalizedCmd === "?") {
+      output = (
+        <div className="space-y-1.5 font-mono text-[10px] text-[#CCCCCC] select-none">
+          <div className="text-[#F9F1A5] font-bold border-b border-white/[0.06] pb-1">AVAILABLE POWERSHELL CMDLETS:</div>
+          <div>• <span className="text-white font-semibold">Get-Content gpa.txt</span> - Display certified GPA transcripts.</div>
+          <div>• <span className="text-white font-semibold">Get-Content research.txt</span> - View IIT Kanpur GenAI research telemetry.</div>
+          <div>• <span className="text-white font-semibold">Get-Content stack.txt</span> - Review live ML deployment stack nodes.</div>
+          <div>• <span className="text-white font-semibold">Clear-Host</span> - Clear the terminal session log.</div>
+          <div className="text-white/40 mt-1">You can type these cmdlets directly or click the buttons below!</div>
+        </div>
+      );
     } else if (normalizedCmd === "clear-host" || normalizedCmd === "clear") {
       setTerminalHistory([
         {
@@ -506,7 +527,8 @@ function DevTerminal() {
         height: isMinimized ? "52px" : "auto",
       }}
       transition={{ type: "spring", stiffness: 300, damping: 28 }}
-      className="rounded-2xl border border-white/15 bg-[#0C0C0C]/90 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(0,0,0,0.65)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_35px_rgba(0,0,0,0.85)] p-4 md:p-5 font-mono text-xs overflow-hidden flex flex-col justify-between text-[#CCCCCC] backdrop-blur-xl transition-shadow duration-500"
+      onClick={() => inputRef.current?.focus()}
+      className="rounded-2xl border border-white/15 bg-[#0C0C0C]/90 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(0,0,0,0.65)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_35px_rgba(0,0,0,0.85)] p-4 md:p-5 font-mono text-xs overflow-hidden flex flex-col justify-between text-[#CCCCCC] backdrop-blur-xl transition-shadow duration-500 cursor-text"
     >
       {/* PowerShell Title Bar */}
       <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
@@ -570,7 +592,7 @@ function DevTerminal() {
                   <div>{item.output}</div>
                 </div>
               ))}
-              {isTyping && (
+              {isTyping ? (
                 <div className="text-[#CCCCCC] flex items-start gap-1 select-none">
                   <span className="text-[#CCCCCC] shrink-0">PS C:\Users\rajeev&gt; </span>
                   <span className="text-white flex items-center font-bold">
@@ -578,6 +600,21 @@ function DevTerminal() {
                     <span className="w-1.5 h-3 bg-white animate-pulse ml-0.5" />
                   </span>
                 </div>
+              ) : (
+                <form onSubmit={handleInputSubmit} className="text-[#CCCCCC] flex items-center gap-1 w-full" onClick={(e) => e.stopPropagation()}>
+                  <span className="text-[#CCCCCC] shrink-0 select-none">PS C:\Users\rajeev&gt; </span>
+                  <div className="relative flex-1 flex items-center">
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      value={userInput}
+                      onChange={(e) => setUserInput(e.target.value)}
+                      className="bg-transparent border-none outline-none text-white font-bold font-mono text-[10px] w-full p-0 focus:ring-0 focus:border-none focus:outline-none placeholder-white/10"
+                      autoFocus
+                      placeholder="Type a cmdlet (e.g. cat gpa.txt, help) and press Enter..."
+                    />
+                  </div>
+                </form>
               )}
             </div>
 
