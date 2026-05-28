@@ -553,7 +553,6 @@ function DevTerminal() {
                       value={userInput}
                       onChange={(e) => setUserInput(e.target.value)}
                       className="bg-transparent border-none outline-none text-white font-bold font-mono text-[10px] w-full p-0 focus:ring-0 focus:border-none focus:outline-none placeholder-white/10"
-                      autoFocus
                       placeholder="Type a cmdlet (e.g. cat gpa.txt, help) and press Enter..."
                     />
                   </div>
