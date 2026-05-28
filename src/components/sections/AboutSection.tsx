@@ -323,64 +323,7 @@ function DevTerminal() {
     const normalizedCmd = cmd.toLowerCase().trim();
 
     if (normalizedCmd === "get-content gpa.txt" || normalizedCmd === "cat gpa.txt") {
-      output = (
-        <div className="space-y-2 font-mono text-[10px] text-[#CCCCCC]">
-          <div className="text-[#F9F1A5] font-extrabold tracking-wider border-b border-white/[0.06] pb-1.5 select-none">TELEMETRY: GPA PROGRESS ARCHIVES</div>
-          
-          <div className="flex items-center gap-4">
-            <span className="text-white/40 text-[9px] w-12 select-none">SEM_01:</span>
-            <span className="text-[#16C60C] font-bold tracking-widest text-xs select-none">
-              ■■■■■■■■<span className="text-white/10">■■</span>
-            </span>
-            <span className="text-right text-[#16C60C] font-semibold text-[10px] ml-auto">8.60</span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="text-white/40 text-[9px] w-12 select-none">SEM_02:</span>
-            <span className="text-[#16C60C] font-bold tracking-widest text-xs select-none">
-              ■■■■■■■■■<span className="text-white/10">■</span>
-            </span>
-            <span className="text-right text-[#16C60C] font-semibold text-[10px] ml-auto">9.38</span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="text-white/40 text-[9px] w-12 select-none">SEM_03:</span>
-            <span className="text-[#16C60C] font-bold tracking-widest text-xs select-none">
-              ■■■■■■■■■<span className="text-white/10">■</span>
-            </span>
-            <span className="text-right text-[#16C60C] font-semibold text-[10px] ml-auto">9.30</span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="text-white/40 text-[9px] w-12 select-none">SEM_04:</span>
-            <span className="text-[#16C60C] font-bold tracking-widest text-xs select-none">
-              ■■■■■■■■■<span className="text-white/10">■</span>
-            </span>
-            <span className="text-right text-[#16C60C] font-semibold text-[10px] ml-auto">9.38</span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="text-white/40 text-[9px] w-12 select-none">SEM_05:</span>
-            <span className="text-[#16C60C] font-bold tracking-widest text-xs select-none">
-              ■■■■■■■■■<span className="text-white/10">■</span>
-            </span>
-            <span className="text-right text-[#16C60C] font-semibold text-[10px] ml-auto">9.17</span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="text-white/40 text-[9px] w-12 select-none">SEM_06:</span>
-            <span className="text-white font-bold tracking-widest text-xs select-none animate-pulse">
-              ■■■■■■■■■■
-            </span>
-            <span className="text-right text-white font-bold text-[10px] ml-auto">9.73</span>
-          </div>
-
-          <div className="text-white/50 border-t border-white/[0.06] pt-2 flex justify-between items-center select-none">
-            <span>CUMULATIVE CGPA:</span>
-            <span className="text-white bg-white/[0.04] border border-white/10 px-2 py-0.5 rounded shadow-[0_0_8px_rgba(255,255,255,0.05)] font-extrabold text-[11px]">9.24 / 10.0</span>
-          </div>
-        </div>
-      );
+      output = <GPALoader />;
     } else if (normalizedCmd === "get-content research.txt" || normalizedCmd === "cat research.txt") {
       output = (
         <div className="space-y-2 font-mono text-[10px] text-[#CCCCCC]">
@@ -840,6 +783,109 @@ function HuggingFaceSandbox() {
           </div>
         )}
 
+      </div>
+    </div>
+  );
+}
+
+function GPALoader() {
+  const [semProgress, setSemProgress] = useState<number[]>([0, 0, 0, 0, 0, 0]);
+  const [finished, setFinished] = useState<boolean[]>([false, false, false, false, false, false]);
+
+  useEffect(() => {
+    let currentSemIdx = 0;
+    const targets = [8, 9, 9, 9, 9, 10]; // target green blocks
+
+    const interval = setInterval(() => {
+      setSemProgress((prev) => {
+        const next = [...prev];
+        if (currentSemIdx > 5) {
+          clearInterval(interval);
+          return prev;
+        }
+
+        if (next[currentSemIdx] < targets[currentSemIdx]) {
+          next[currentSemIdx] += 1;
+          return next;
+        } else {
+          setFinished((prevFin) => {
+            const nextFin = [...prevFin];
+            nextFin[currentSemIdx] = true;
+            return nextFin;
+          });
+          if (currentSemIdx < 5) {
+            currentSemIdx += 1;
+            next[currentSemIdx] += 1;
+            return next;
+          } else {
+            clearInterval(interval);
+            return prev;
+          }
+        }
+      });
+    }, 60);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const semData = [
+    { name: "SEM_01", val: "8.60" },
+    { name: "SEM_02", val: "9.38" },
+    { name: "SEM_03", val: "9.30" },
+    { name: "SEM_04", val: "9.38" },
+    { name: "SEM_05", val: "9.17" },
+    { name: "SEM_06", val: "9.73" },
+  ];
+
+  return (
+    <div className="space-y-2 font-mono text-[10px] text-[#CCCCCC]">
+      <div className="text-[#F9F1A5] font-extrabold tracking-wider border-b border-white/[0.06] pb-1.5 select-none">
+        TELEMETRY: GPA PROGRESS ARCHIVES [DOWNLOADING...]
+      </div>
+
+      {semData.map((sem, idx) => {
+        const progress = semProgress[idx];
+        const isCompleted = finished[idx] || progress >= (idx === 5 ? 10 : [8, 9, 9, 9, 9, 10][idx]);
+        const isActive = !isCompleted && progress > 0;
+        const isQueued = progress === 0 && (idx === 0 || finished[idx - 1]);
+
+        return (
+          <div key={sem.name} className="flex items-center gap-4">
+            <span className="text-white/40 text-[9px] w-12 select-none">{sem.name}:</span>
+            <span className="text-[#16C60C] font-bold tracking-widest text-xs select-none">
+              {"■".repeat(progress)}
+              <span className="text-white/10">
+                {"■".repeat(10 - progress)}
+              </span>
+            </span>
+            {isCompleted ? (
+              <span className="text-right text-[#16C60C] font-semibold text-[10px] ml-auto">
+                {sem.val}
+              </span>
+            ) : isActive ? (
+              <span className="text-right text-[#F9F1A5] font-bold text-[9px] ml-auto animate-pulse">
+                DOWNLOADING...
+              </span>
+            ) : (
+              <span className="text-right text-white/20 text-[9px] ml-auto select-none">
+                QUEUED
+              </span>
+            )}
+          </div>
+        );
+      })}
+
+      <div className="text-white/50 border-t border-white/[0.06] pt-2 flex justify-between items-center select-none">
+        <span>CUMULATIVE CGPA:</span>
+        {finished[5] ? (
+          <span className="text-white bg-white/[0.04] border border-white/10 px-2 py-0.5 rounded shadow-[0_0_8px_rgba(255,255,255,0.05)] font-extrabold text-[11px] animate-bounce">
+            9.24 / 10.0
+          </span>
+        ) : (
+          <span className="text-white/30 font-bold text-[9px] animate-pulse">
+            CALCULATING...
+          </span>
+        )}
       </div>
     </div>
   );
