@@ -131,8 +131,9 @@ export default function HeroSection() {
         rightPanel.style.opacity = String(Math.max(0, 1 - progress * 3.5));
         rightPanel.style.transform = `translateY(${progress * 20}px)`;
 
-        // Fade background video frames (canvas) rather than the buttons and text
-        canvas.style.opacity = String(Math.max(0, 1 - progress * 1.5));
+        // Fade background video frames (canvas) smoothly only at the very end of the scroll scrub
+        const canvasOpacity = progress < 0.7 ? 1 : Math.max(0, (1 - progress) / 0.3);
+        canvas.style.opacity = String(canvasOpacity);
 
         const scrollFade = Math.min(1, (progress - 0.35) / 0.35);
         scrollContent.style.opacity = String(Math.max(0, scrollFade));
