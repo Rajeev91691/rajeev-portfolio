@@ -23,16 +23,7 @@ export default function ContactSection() {
 
     setFormStatus("submitting");
 
-    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
-
-    if (!accessKey) {
-      // Local premium simulation fallback
-      setTimeout(() => {
-        setFormStatus("success");
-        setFormData({ name: "", email: "", message: "" });
-      }, 1200);
-      return;
-    }
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "79ae33db-a27e-4ac3-a5a4-6d5fc8189047";
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
