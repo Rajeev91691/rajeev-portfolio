@@ -26,6 +26,10 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
+.env
+.env.local
+.env.production
+.env.development
 .env*.local
 
 # vercel
@@ -35,4 +39,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.vercel
+# secrets & agent files
+.antigravity_secret
