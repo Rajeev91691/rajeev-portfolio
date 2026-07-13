@@ -11,9 +11,10 @@ const displayFont = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-di
 const monoFont = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "Rajeev Nandan.D | AI Engineer & Full-Stack Developer",
+  title: "Rajeev Nandan Damarla | AI Engineer & Full-Stack Developer",
   description:
     "Engineering Neural Inference Pipelines at the intersection of AI and Web Development. B.Tech CSE at GITAM, Visakhapatnam.",
+  keywords: ["rajeevnandan", "Rajeev Nandan Damarla", "Rajeev91691", "AI Developer", "IIT Kanpur", "Stable Diffusion", "FAISS"],
 };
 
 export default function RootLayout({
@@ -24,6 +25,30 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} font-body antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "Rajeev Nandan Damarla",
+              "alternateName": "rajeevnandan",
+              "url": "https://rajeevnandan.rweb.site",
+              "image": "https://github.com/Rajeev91691.png",
+              "sameAs": [
+                "https://linkedin.com/in/rajeev-nandan-damarla",
+                "https://github.com/Rajeev91691",
+                "https://huggingface.co/Rajeev91691",
+                "https://leetcode.com/u/Rajeev91691/"
+              ],
+              "jobTitle": "Software Engineer & AI Developer",
+              "alumniOf": {
+                "@type": "CollegeOrUniversity",
+                "name": "GITAM University"
+              }
+            })
+          }}
+        />
         <CustomCursor />
         <AmbientBackground />
         <Navbar />
