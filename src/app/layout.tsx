@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import CustomCursor from "@/components/CustomCursor";
+import Cursor from "@/components/ui/inverted-cursor";
 import AmbientBackground from "@/components/3d/AmbientBackground";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -49,7 +49,7 @@ export default function RootLayout({
             })
           }}
         />
-        <CustomCursor />
+        <Cursor />
         <AmbientBackground />
         <Navbar />
         {children}
