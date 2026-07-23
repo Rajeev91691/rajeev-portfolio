@@ -38,7 +38,8 @@ const TextMarquee = forwardRef<HTMLDivElement, TextMarqueeProps>(({
     clamp: false,
   });
 
-  const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`);
+  // Since we render 2 identical copies, translating from 0% to -50% is mathematically seamless
+  const x = useTransform(baseX, (v) => `${wrap(-50, 0, v)}%`);
 
   const directionFactor = useRef<number>(1);
   const hasStarted = useRef(false);
@@ -54,31 +55,35 @@ const TextMarquee = forwardRef<HTMLDivElement, TextMarqueeProps>(({
   useAnimationFrame((t, delta) => {
     if (!hasStarted.current) return;
 
-    let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
-
+    // Use a small velocity threshold to prevent micro-fluctuations from shaking the direction
     if (scrollDependent) {
-      if (velocityFactor.get() < 0) {
+      const vel = velocityFactor.get();
+      if (vel < -0.05) {
         directionFactor.current = -1;
-      } else if (velocityFactor.get() > 0) {
+      } else if (vel > 0.05) {
         directionFactor.current = 1;
       }
     }
 
-    moveBy += directionFactor.current * moveBy * velocityFactor.get();
+    // Smoothly scale the speed based on scroll velocity
+    const speedMultiplier = 1 + Math.abs(velocityFactor.get()) * 1.5;
+    const moveBy = directionFactor.current * baseVelocity * (delta / 1000) * speedMultiplier;
 
     baseX.set(baseX.get() + moveBy);
   });
 
   return (
-    <div ref={ref} className="overflow-hidden whitespace-nowrap flex flex-nowrap" style={{ transform: "translateZ(0)", backfaceVisibility: "hidden" }}>
+    <div 
+      ref={ref} 
+      className="overflow-hidden whitespace-nowrap flex flex-nowrap w-full" 
+      style={{ transform: "translateZ(0)", backfaceVisibility: "hidden" }}
+    >
       <motion.div
-        className="flex whitespace-nowrap gap-10 flex-nowrap"
+        className="flex whitespace-nowrap gap-20 flex-nowrap w-max"
         style={{ x }}
       >
-        <span className={cn("block text-[8vw]", className)}>{children}</span>
-        <span className={cn("block text-[8vw]", className)}>{children}</span>
-        <span className={cn("block text-[8vw]", className)}>{children}</span>
-        <span className={cn("block text-[8vw]", className)}>{children}</span>
+        <span className={cn("block text-[8vw] shrink-0", className)}>{children} &nbsp;&nbsp;•&nbsp;&nbsp;</span>
+        <span className={cn("block text-[8vw] shrink-0", className)}>{children} &nbsp;&nbsp;•&nbsp;&nbsp;</span>
       </motion.div>
     </div>
   );

@@ -31,7 +31,7 @@ export default function HeroSection() {
   const rafPendingRef = useRef(false);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
-  // ─── Phase 1: Parallel WebP fetch & decode ───────────────────────────────
+  // ─── Phase 1: Progressive WebP fetch & decode ───────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
@@ -48,7 +48,7 @@ export default function HeroSection() {
     };
     window.addEventListener("resize", handleResize);
 
-    let loaded = 0;
+    let loadedCount = 0;
     let cancelled = false;
 
     const drawFrame = (frame: ImageBitmap | undefined) => {
@@ -60,23 +60,47 @@ export default function HeroSection() {
       ctx.drawImage(frame, x, y, frame.width * scale, frame.height * scale);
     };
 
-    // Fetch all frames in parallel — the browser handles concurrency limits
-    const promises = FRAME_URLS.map((url, i) =>
-      fetch(url)
-        .then((r) => r.blob())
-        .then((blob) => createImageBitmap(blob))
-        .then((bitmap) => {
-          if (cancelled) return;
-          framesRef.current[i] = bitmap;
-          loaded++;
-          setLoadProgress((loaded / TOTAL_FRAMES) * 100);
-          // Show frame 0 the instant it arrives
-          if (i === 0 && loaded === 1) drawFrame(bitmap);
-        })
-    );
+    const loadFrame = async (i: number) => {
+      try {
+        const response = await fetch(FRAME_URLS[i]);
+        if (!response.ok) throw new Error(`HTTP status ${response.status}`);
+        const blob = await response.blob();
+        const bitmap = await createImageBitmap(blob);
+        if (cancelled) {
+          bitmap.close();
+          return;
+        }
+        framesRef.current[i] = bitmap;
+        loadedCount++;
+        setLoadProgress((loadedCount / TOTAL_FRAMES) * 100);
+        // Show frame 0 the instant it arrives
+        if (i === 0) drawFrame(bitmap);
+      } catch (err) {
+        console.error(`Failed to load frame ${i}`, err);
+      }
+    };
 
-    Promise.all(promises).then(() => {
-      if (!cancelled) setIsLoading(false);
+    // Load first 15 frames first to unblock the page initial load quickly
+    const criticalIndices = Array.from({ length: 15 }, (_, i) => i);
+    const nonCriticalIndices = Array.from({ length: TOTAL_FRAMES - 15 }, (_, i) => i + 15);
+
+    const criticalPromises = criticalIndices.map((i) => loadFrame(i));
+
+    Promise.all(criticalPromises).then(() => {
+      if (cancelled) return;
+      setIsLoading(false); // Reveal the page to the user!
+
+      // Load remaining frames in batches of 8 with a slight gap to avoid choking the connection pool
+      const loadRemaining = async () => {
+        const batchSize = 8;
+        for (let k = 0; k < nonCriticalIndices.length; k += batchSize) {
+          if (cancelled) break;
+          const batch = nonCriticalIndices.slice(k, k + batchSize);
+          await Promise.all(batch.map((i) => loadFrame(i)));
+          await new Promise((r) => setTimeout(r, 40)); // Yield thread for 40ms
+        }
+      };
+      loadRemaining();
     });
 
     return () => {
@@ -86,7 +110,7 @@ export default function HeroSection() {
     };
   }, []);
 
-  // ─── Phase 2: Wire ScrollTrigger once frames are ready ───────────────────
+  // ─── Phase 2: Wire ScrollTrigger once critical frames are ready ───────────
   useEffect(() => {
     if (isLoading) return;
 
@@ -100,8 +124,31 @@ export default function HeroSection() {
     if (!canvas || !ctx || !container || !leftPanel || !rightPanel || !scrollContent) return;
 
     const renderFrame = (index: number) => {
-      const frame = framesRef.current[Math.max(0, Math.min(index, TOTAL_FRAMES - 1))];
-      if (!frame) { rafPendingRef.current = false; return; }
+      let frame = framesRef.current[Math.max(0, Math.min(index, TOTAL_FRAMES - 1))];
+      
+      // Fallback: search for the nearest loaded frame if current isn't loaded
+      if (!frame) {
+        let dist = 1;
+        while (dist < TOTAL_FRAMES) {
+          const prevIdx = index - dist;
+          const nextIdx = index + dist;
+          if (prevIdx >= 0 && framesRef.current[prevIdx]) {
+            frame = framesRef.current[prevIdx];
+            break;
+          }
+          if (nextIdx < TOTAL_FRAMES && framesRef.current[nextIdx]) {
+            frame = framesRef.current[nextIdx];
+            break;
+          }
+          dist++;
+        }
+      }
+
+      if (!frame) {
+        rafPendingRef.current = false;
+        return;
+      }
+
       const scale = Math.max(canvas.width / frame.width, canvas.height / frame.height);
       const x = (canvas.width - frame.width * scale) / 2;
       const y = (canvas.height - frame.height * scale) / 2;

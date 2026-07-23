@@ -53,7 +53,7 @@ const knowledgeBase: KnowledgeEntry[] = [
   {
     category: "contact",
     keywords: ["contact", "email", "phone", "hire", "recruiting", "job", "linkedin", "github", "connect", "reach"],
-    content: "You can reach out to Rajeev directly through the following channels:\n\n• 📧 **Email:** rajeevnandan382@gmail.com\n\n• 📞 **Phone:** +91 9481509488\n\n• 💼 **LinkedIn:** [linkedin.com/in/rajeev-nandan-d](https://www.linkedin.com/in/rajeev-nandan-d-59b367293)\n\n• 🐙 **GitHub:** [github.com/Rajeev91691](https://github.com/Rajeev91691)\n\n*He is currently based in Visakhapatnam, India, and is open to immediate internships, full-time engineering roles, and exciting collaborations!*"
+    content: "You can reach out to Rajeev directly through the following channels:\n\n• 📧 **Email:** rajeevnandan382@gmail.com\n\n• 💼 **LinkedIn:** [linkedin.com/in/rajeev-nandan-d](https://www.linkedin.com/in/rajeev-nandan-d-59b367293)\n\n• 🐙 **GitHub:** [github.com/Rajeev91691](https://github.com/Rajeev91691)\n\n*He is currently based in Visakhapatnam, India, and is open to immediate internships, full-time engineering roles, and exciting collaborations!*"
   },
   {
     category: "whois",

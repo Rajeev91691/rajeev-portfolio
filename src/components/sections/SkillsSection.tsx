@@ -2,8 +2,10 @@
 
 import { useRef, useState } from "react";
 import TextMarquee from "@/components/ui/text-marque";
-import { ParticleTextEffect } from "@/components/ui/interactive-text-particle";
+import ParticleImage from "@/components/ParticleImage";
 import { Brain, Cpu, Database, Network, Sliders, BookOpen, Atom, Server, Code2, ShieldAlert } from "lucide-react";
+
+const SKILLS_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="250" viewBox="0 0 800 250"><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Plus Jakarta Sans, Inter, sans-serif" font-weight="900" font-size="140" fill="%23ffffff" letter-spacing="8">SKILLS</text></svg>`;
 
 interface KeySkill {
   name: string;
@@ -74,12 +76,31 @@ export default function SkillsSection() {
     <section id="skills" className="py-24 md:py-32 bg-transparent overflow-hidden">
 
       {/* Particle text heading — interactive, cursor-reactive */}
-      <div className="relative w-full overflow-hidden isolate" style={{ height: "260px" }}>
-        <ParticleTextEffect
-          text="SKILLS"
-          colors={['ffffff', 'e0e0e0', 'aaaaaa', '888888', '555555', '888888', 'aaaaaa', 'e0e0e0', 'ffffff']}
-          animationForce={90}
-          particleDensity={3}
+      <div className="relative w-full overflow-hidden isolate mx-auto" style={{ height: "260px", maxWidth: "800px" }}>
+        <ParticleImage
+          width="100%"
+          height="100%"
+          particleCount={50}
+          particleSize={5}
+          particleShape="circle"
+          particleColor="original"
+          imageConfig={{
+            image: SKILLS_SVG,
+            mode: "fit",
+            scale: 10,
+          }}
+          hoverEnabled={true}
+          hoverConfig={{
+            hoverType: "roam",
+            roamOpacity: 0.4,
+            transition: { duration: 1.2, ease: "easeInOut" }
+          }}
+          repulsionEnabled={true}
+          repulsionConfig={{
+            repulsionMode: "outside",
+            repulsionForce: 15,
+            repulsionRadius: 120
+          }}
         />
       </div>
 

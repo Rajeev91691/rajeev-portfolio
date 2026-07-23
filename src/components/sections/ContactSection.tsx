@@ -65,8 +65,8 @@ export default function ContactSection() {
     {
       icon: Phone,
       title: "Phone",
-      detail: "+91 9481509488",
-      href: "tel:+919481509488",
+      detail: "Available upon request",
+      href: "mailto:rajeevnandan382@gmail.com?subject=Phone%20Number%20Request",
     },
     {
       icon: MapPin,
