@@ -33,11 +33,35 @@ export default function SpacetimeBackground() {
       mouseRef.current.active = false;
     };
 
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        mouseRef.current.x = e.touches[0].clientX;
+        mouseRef.current.y = e.touches[0].clientY;
+        mouseRef.current.active = true;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        mouseRef.current.x = e.touches[0].clientX;
+        mouseRef.current.y = e.touches[0].clientY;
+        mouseRef.current.active = true;
+      }
+    };
+
+    const handleTouchEnd = () => {
+      mouseRef.current.active = false;
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    window.addEventListener("touchend", handleTouchEnd, { passive: true });
 
-    const SPACING = 40;
-    const INFLUENCE_RADIUS = 240;
+    const isMobile = window.matchMedia("(max-width: 768px)").matches || ("ontouchstart" in window);
+    const SPACING = isMobile ? 60 : 40;
+    const INFLUENCE_RADIUS = isMobile ? 150 : 240;
     const GRAVITY_STRENGTH = 0.75;
     const EASE = 0.15;
 
@@ -148,6 +172,9 @@ export default function SpacetimeBackground() {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

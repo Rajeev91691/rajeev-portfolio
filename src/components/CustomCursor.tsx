@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const LERP_FACTOR = 0.12;
 
@@ -14,6 +14,7 @@ interface Particle {
 }
 
 export default function CustomCursor() {
+  const [isTouch, setIsTouch] = useState(false);
   const cursorRef = useRef<HTMLDivElement>(null);
   const mouseX = useRef(0);
   const mouseY = useRef(0);
@@ -27,6 +28,22 @@ export default function CustomCursor() {
   const spawnTimer = useRef(0);
 
   useEffect(() => {
+    const checkTouch = () => {
+      return (
+        window.matchMedia("(pointer: coarse)").matches ||
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0
+      );
+    };
+
+    if (checkTouch()) {
+      setIsTouch(true);
+      return;
+    }
+
+    const originalCursor = document.body.style.cursor;
+    document.body.style.cursor = "none";
+
     const cursor = cursorRef.current;
     const canvas = canvasRef.current;
     if (!cursor || !canvas) return;
@@ -177,11 +194,14 @@ export default function CustomCursor() {
     animateRing();
 
     return () => {
+      document.body.style.cursor = originalCursor;
       window.removeEventListener("mousemove", updateMouse);
       observer.disconnect();
       if (rafId.current) cancelAnimationFrame(rafId.current);
     };
   }, []);
+
+  if (isTouch) return null;
 
   return (
     <div
