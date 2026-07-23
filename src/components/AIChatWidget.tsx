@@ -264,7 +264,7 @@ export default function AIChatWidget() {
   return (
     <>
       {/* Floating Action Button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-12 right-6 z-50">
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
           className="relative group p-4 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md border border-white/10 shadow-2xl flex items-center justify-center cursor-pointer transition-all duration-300"
@@ -314,7 +314,7 @@ export default function AIChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-24 right-6 z-50 w-[92vw] sm:w-[400px] h-[580px] max-h-[80vh] flex flex-col rounded-2xl bg-black/85 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden"
+            className="fixed bottom-30 right-6 z-50 w-[92vw] sm:w-[400px] h-[580px] max-h-[80vh] flex flex-col rounded-2xl bg-black/85 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/10 bg-white/[0.02]">
