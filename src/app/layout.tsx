@@ -5,6 +5,7 @@ import Cursor from "@/components/ui/inverted-cursor";
 import AmbientBackground from "@/components/3d/AmbientBackground";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const bodyFont = Inter({ subsets: ["latin"], variable: "--font-body" });
 const displayFont = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-display" });
@@ -49,6 +50,7 @@ export default function RootLayout({
             })
           }}
         />
+        <SmoothScroll />
         <Cursor />
         <AmbientBackground />
         <Navbar />

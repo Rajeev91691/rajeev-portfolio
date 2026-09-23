@@ -97,7 +97,12 @@ export default function Footer() {
   const handleScrollClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     const target = document.querySelector(href);
-    if (target) {
+    if (!target) return;
+
+    const lenis = (window as unknown as { __lenis?: { scrollTo: (target: Element | string | number, opts?: { offset?: number; duration?: number }) => void } }).__lenis;
+    if (lenis) {
+      lenis.scrollTo(target, { offset: -40, duration: 1.2 });
+    } else {
       target.scrollIntoView({ behavior: "smooth" });
     }
   };
@@ -205,7 +210,14 @@ export default function Footer() {
         <div className="w-full h-px bg-white/5 my-16 flex justify-center items-center relative">
           <div className="absolute">
             <motion.button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              onClick={() => {
+                const lenis = (window as unknown as { __lenis?: { scrollTo: (target: number, opts?: { duration?: number }) => void } }).__lenis;
+                if (lenis) {
+                  lenis.scrollTo(0, { duration: 1.5 });
+                } else {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
               onMouseEnter={() => setIsBackHovered(true)}
               onMouseLeave={() => setIsBackHovered(false)}
               className="relative flex items-center justify-center w-12 h-12 rounded-full border border-white/10 bg-black hover:border-white/40 transition-colors group shadow-2xl z-20"

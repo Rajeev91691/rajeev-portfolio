@@ -56,7 +56,12 @@ export default function Navbar() {
   ) => {
     e.preventDefault();
     const target = document.querySelector(href);
-    if (target) {
+    if (!target) return;
+
+    const lenis = (window as unknown as { __lenis?: { scrollTo: (target: Element | string, opts?: { offset?: number; duration?: number }) => void } }).__lenis;
+    if (lenis) {
+      lenis.scrollTo(target, { offset: -40, duration: 1.2 });
+    } else {
       target.scrollIntoView({ behavior: "smooth" });
     }
   };

@@ -158,20 +158,19 @@ export default function HeroSection() {
       rafPendingRef.current = false;
     };
 
-    // Scrub 144 frames from top to bottom of the entire web page!
-    scrollTriggerRef.current = ScrollTrigger.create({
-      trigger: document.body,
-      start: "top top",
-      end: "bottom bottom",
-      scrub: 0.5,
-      onUpdate: (self) => {
-        const progress = self.progress;
-        const targetFrame = Math.round(progress * (TOTAL_FRAMES - 1));
-
-        if (!rafPendingRef.current) {
-          rafPendingRef.current = true;
-          requestAnimationFrame(() => renderFrame(targetFrame));
-        }
+    // Continuous smooth GSAP frame scrubbing synchronized with Lenis
+    const frameData = { index: 0 };
+    const frameTween = gsap.to(frameData, {
+      index: TOTAL_FRAMES - 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.6,
+      },
+      onUpdate: () => {
+        renderFrame(Math.round(frameData.index));
       },
     });
 
@@ -192,7 +191,7 @@ export default function HeroSection() {
     });
 
     return () => {
-      scrollTriggerRef.current?.kill();
+      frameTween.kill();
       panelTrigger.kill();
     };
   }, [isLoading]);
