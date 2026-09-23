@@ -20,9 +20,8 @@ export default function Home() {
       <AnimatePresence mode="wait">
         {loading && <Loader onComplete={() => setLoading(false)} />}
       </AnimatePresence>
-      <main className="relative bg-transparent text-foreground">
+      <main className="relative bg-transparent text-foreground min-h-screen">
         <HeroSection />
-        <SpacetimeBackground />
         <AboutSection />
         <SkillsSection />
         <ProjectsSection />

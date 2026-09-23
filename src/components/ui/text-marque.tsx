@@ -82,8 +82,8 @@ const TextMarquee = forwardRef<HTMLDivElement, TextMarqueeProps>(({
         className="flex whitespace-nowrap gap-20 flex-nowrap w-max"
         style={{ x }}
       >
-        <span className={cn("block text-[8vw] shrink-0", className)}>{children} &nbsp;&nbsp;•&nbsp;&nbsp;</span>
-        <span className={cn("block text-[8vw] shrink-0", className)}>{children} &nbsp;&nbsp;•&nbsp;&nbsp;</span>
+        <span className={cn("block text-[clamp(1.75rem,3.8vw,3.4rem)] shrink-0 tracking-tight", className)}>{children} &nbsp;&nbsp;•&nbsp;&nbsp;</span>
+        <span className={cn("block text-[clamp(1.75rem,3.8vw,3.4rem)] shrink-0 tracking-tight", className)}>{children} &nbsp;&nbsp;•&nbsp;&nbsp;</span>
       </motion.div>
     </div>
   );

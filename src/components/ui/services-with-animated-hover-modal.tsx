@@ -43,15 +43,14 @@ export function ProjectsWithAnimatedHoverModal({
   const [modal, setModal] = useState({ active: false, index: 0 });
 
   return (
-    <div className={cn("py-24 md:py-32 overflow-hidden bg-transparent", className)}>
-      <div className="mx-auto max-w-7xl px-5 md:px-0">
-        <div className="flex flex-col md:flex-row justify-between mb-16 gap-8">
-          <h2 className="font-display text-5xl md:text-7xl tracking-tight">
+    <div className={cn("py-[clamp(3.5rem,6vw,6.5rem)] overflow-hidden bg-transparent", className)}>
+      <div className="mx-auto max-w-[min(92vw,1440px)] px-[clamp(1rem,3vw,2.5rem)]">
+        <div className="flex flex-col md:flex-row justify-between mb-[clamp(2rem,3.5vw,3.5rem)] gap-6">
+          <h2 className="font-display text-[clamp(1.75rem,3.5vw+0.5rem,3.2rem)] font-bold tracking-tight">
             Projects.
           </h2>
-          <p className="max-w-md font-medium text-muted-foreground">
-            A collection of work exploring the intersection of AI, web
-            development, and data science.
+          <p className="max-w-md text-xs md:text-sm text-muted-foreground leading-relaxed">
+            A collection of work exploring the intersection of artificial intelligence, high-performance web systems, and data science.
           </p>
         </div>
         <div className="flex flex-col items-center justify-center">
@@ -90,35 +89,35 @@ function ProjectItem({
 
   return (
     <div
-      className="group flex w-full cursor-pointer items-center justify-between border-[rgb(50,50,50)] border-t px-5 md:px-25 py-8 md:py-12.5 transition-all duration-200 last:border-b hover:opacity-50"
+      className="group flex w-full cursor-pointer items-center justify-between border-white/[0.08] border-t px-[clamp(0.75rem,2vw,2rem)] py-[clamp(1rem,1.8vw,1.6rem)] transition-all duration-200 last:border-b hover:bg-white/[0.02]"
       onMouseEnter={() => setModal({ active: true, index })}
       onMouseLeave={() => setModal({ active: false, index })}
       onClick={handleProjectClick}
       data-cursor-hover="true"
     >
-      <div className="flex items-center gap-4">
-        <h2 className="m-0 font-normal text-3xl md:text-6xl transition-all duration-300 group-hover:translate-x-2.5">
+      <div className="flex items-center gap-3 md:gap-4 min-w-0">
+        <h3 className="m-0 font-display font-medium text-[clamp(1.05rem,1.8vw+0.2rem,2rem)] text-foreground transition-all duration-300 group-hover:translate-x-2 truncate">
           {project.title}
-        </h2>
+        </h3>
         {project.github && (
           <a
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:flex items-center gap-1.5 text-muted-foreground/60 hover:text-white transition-colors"
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-muted-foreground hover:text-white transition-colors shrink-0"
             data-cursor-hover="true"
             onClick={(e) => e.stopPropagation()}
           >
-            <Github className="size-4" />
-            <span className="text-xs font-medium">Code</span>
+            <Github className="size-3.5" />
+            <span className="text-[11px] font-mono">Code</span>
           </a>
         )}
       </div>
-      <div className="flex items-center gap-4">
-        <p className="font-light text-sm md:text-base transition-all duration-300 group-hover:translate-x-2.5 hidden md:block">
+      <div className="flex items-center gap-4 shrink-0">
+        <p className="font-mono text-[clamp(0.68rem,0.9vw,0.82rem)] text-muted-foreground/75 transition-all duration-300 group-hover:translate-x-1 hidden md:block">
           {project.techStack}
         </p>
-        {hasLinks && <ArrowUpRight className="size-5 md:size-6 transition-all duration-300 group-hover:translate-x-2.5 group-hover:-translate-y-2.5" />}
+        {hasLinks && <ArrowUpRight className="size-4 md:size-5 text-muted-foreground transition-all duration-300 group-hover:text-foreground group-hover:translate-x-1 group-hover:-translate-y-1" />}
       </div>
     </div>
   );

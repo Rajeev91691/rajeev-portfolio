@@ -102,56 +102,56 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="py-24 md:py-32 bg-transparent relative overflow-hidden"
+      className="py-[clamp(3.5rem,6vw,6.5rem)] bg-transparent relative overflow-hidden"
     >
 
       <div className="noise-overlay" />
       <div className="dot-grid absolute inset-0 opacity-40" />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-[min(92vw,1440px)] mx-auto px-[clamp(1rem,3vw,2.5rem)] relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-20">
-          <h2 className="font-display text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-foreground via-foreground to-accent bg-clip-text text-transparent tracking-tight">
+        <div className="text-center mb-[clamp(2rem,3.5vw,3.5rem)]">
+          <h2 className="font-display text-[clamp(1.75rem,3.5vw+0.5rem,3.2rem)] font-bold mb-2.5 bg-gradient-to-r from-foreground via-foreground to-accent bg-clip-text text-transparent tracking-tight">
             Let&apos;s Work Together
           </h2>
-          <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-xs md:text-sm max-w-xl mx-auto">
             Have a project in mind, looking to hire, or simply want to say hello? I&apos;m always open to discussing new opportunities.
           </p>
         </div>
 
         {/* 21st.dev Premium Bento Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[clamp(1rem,1.8vw,1.75rem)] items-stretch">
           
           {/* Left Bento: Info Cards and Social Buttons (5 columns) */}
-          <div className="lg:col-span-5 flex flex-col gap-6">
+          <div className="lg:col-span-5 flex flex-col gap-4">
             
             {/* Header Bento Box */}
-            <div className="rounded-3xl border border-white/[0.06] bg-[#141414]/25 p-8 backdrop-blur-xl flex flex-col justify-between min-h-[160px]">
+            <div className="rounded-2xl border border-white/[0.06] bg-[#141414]/25 p-[clamp(1.25rem,2vw,1.75rem)] backdrop-blur-xl flex flex-col justify-between min-h-[140px]">
               <div>
-                <h3 className="font-display text-2xl font-bold text-foreground mb-2">Connect Directly</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
+                <h3 className="font-display text-[clamp(1.15rem,1.6vw,1.4rem)] font-bold text-foreground mb-1.5">Connect Directly</h3>
+                <p className="text-muted-foreground text-xs leading-relaxed">
                   Skip the form if you prefer. My inbox is always open for direct inquiries.
                 </p>
               </div>
-              <div className="mt-4 flex items-center gap-2 text-xs font-semibold text-accent/80">
+              <div className="mt-3 flex items-center gap-2 text-xs font-semibold text-accent/80">
                 <span className="w-1.5 h-1.5 rounded-full bg-green animate-pulse" />
                 <span>Response time within 24 hours</span>
               </div>
             </div>
 
             {/* Info Cards Column */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3">
               {contactInfo.map((info, index) => (
                 <ContactInfoCard key={index} info={info} />
               ))}
             </div>
 
             {/* Socials Bento Box */}
-            <div className="rounded-3xl border border-white/[0.06] bg-[#141414]/20 p-6 backdrop-blur-xl flex flex-col gap-4">
-              <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+            <div className="rounded-2xl border border-white/[0.06] bg-[#141414]/20 p-[clamp(1rem,1.8vw,1.5rem)] backdrop-blur-xl flex flex-col gap-3">
+              <h4 className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider font-mono">
                 Follow On Socials
               </h4>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2.5">
                 {socialLinks.map((link) => {
                   const Icon = link.icon;
                   return (
@@ -160,10 +160,10 @@ export default function ContactSection() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] text-foreground text-sm font-medium hover:bg-foreground hover:text-background transition-all duration-300"
+                      className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.06] text-foreground text-xs font-medium hover:bg-foreground hover:text-background transition-all duration-300"
                       data-cursor-hover="true"
                     >
-                      <Icon className="size-4" />
+                      <Icon className="size-3.5" />
                       <span>{link.name}</span>
                     </a>
                   );
@@ -175,7 +175,7 @@ export default function ContactSection() {
 
           {/* Right Bento: Clean Message Form Card (7 columns) */}
           <div className="lg:col-span-7">
-            <div className="h-full rounded-3xl border border-white/[0.06] bg-[#141414]/25 p-8 md:p-10 backdrop-blur-xl flex flex-col justify-between relative overflow-hidden min-h-[420px]">
+            <div className="h-full rounded-2xl border border-white/[0.06] bg-[#141414]/25 p-[clamp(1.25rem,2.2vw,2.25rem)] backdrop-blur-xl flex flex-col justify-between relative overflow-hidden min-h-[380px]">
               <div className="absolute top-0 right-0 w-[20rem] h-[20rem] rounded-full bg-accent/2 blur-[80px] pointer-events-none" />
 
               {formStatus === "success" ? (
