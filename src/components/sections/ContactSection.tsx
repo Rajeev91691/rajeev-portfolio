@@ -326,8 +326,17 @@ function ContactInfoCard({ info }: { info: any }) {
         </p>
       </div>
 
-      <span className="text-muted-foreground/30 text-sm transform translate-x-[-10px] opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100 group-hover:text-accent relative z-10">
-        →
+      <span className="size-8 rounded-full border border-white/10 bg-white/[0.03] flex items-center justify-center text-white/40 group-hover:text-white group-hover:border-white/30 group-hover:bg-white/[0.08] transition-all duration-300 shrink-0 relative z-10">
+        <svg
+          className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="square"
+        >
+          <path d="M5 19 19 5M5 5h14v14" />
+        </svg>
       </span>
     </a>
   );

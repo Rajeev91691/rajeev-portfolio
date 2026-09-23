@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
 import { TextScramble } from "@/components/ui/text-scramble";
 import { motion, AnimatePresence } from "framer-motion";
+import NexScrollArrow from "@/components/ui/NexScrollArrow";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -250,17 +251,37 @@ export default function HeroSection() {
               <a
                 href="/Rajeev_Nandan_Damarla_Resume.pdf"
                 download
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-foreground text-background text-xs sm:text-sm font-semibold hover:opacity-85 transition-opacity shadow-lg"
+                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-foreground text-background text-xs sm:text-sm font-semibold hover:opacity-90 transition-all shadow-lg"
                 data-cursor-hover="true"
               >
-                Download Resume
+                <span>Download Resume</span>
+                <svg
+                  className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="square"
+                >
+                  <path d="M12 4v12M6 10l6 6 6-6M4 20h16" />
+                </svg>
               </a>
               <Link
                 href="#projects"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/20 bg-white/[0.03] backdrop-blur-md text-foreground text-xs sm:text-sm font-semibold hover:border-white/50 transition-colors shadow-lg"
+                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/20 bg-white/[0.03] backdrop-blur-md text-foreground text-xs sm:text-sm font-semibold hover:border-white/50 hover:bg-white/[0.07] transition-all shadow-lg"
                 data-cursor-hover="true"
               >
-                View Projects
+                <span>View Projects</span>
+                <svg
+                  className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="square"
+                >
+                  <path d="M5 19 19 5M5 5h14v14" />
+                </svg>
               </Link>
             </div>
           </div>
@@ -287,6 +308,14 @@ export default function HeroSection() {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Floating NexStudio Scroll-Down Arrow */}
+        <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1.5 pointer-events-auto">
+          <NexScrollArrow targetId="#about" label="Scroll down to About" />
+          <span className="text-[10px] font-mono tracking-widest uppercase text-muted-foreground/50 hidden sm:block">
+            Explore
+          </span>
         </div>
       </section>
     </>

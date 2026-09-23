@@ -5,6 +5,7 @@ import { useInView } from "motion/react";
 import { GraduationCap, Terminal, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import NexScrollArrow from "@/components/ui/NexScrollArrow";
 
 export default function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -119,6 +120,14 @@ export default function AboutSection() {
             <DevTerminal />
           </div>
 
+        </div>
+
+        {/* Section Transition Arrow */}
+        <div className="mt-10 md:mt-14 flex flex-col items-center justify-center gap-1.5">
+          <NexScrollArrow targetId="#skills" label="Continue to Skills" />
+          <span className="text-[10px] font-mono tracking-widest uppercase text-muted-foreground/40">
+            Skills &amp; Architecture
+          </span>
         </div>
       </div>
     </section>

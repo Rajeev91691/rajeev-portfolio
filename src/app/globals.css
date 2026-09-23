@@ -27,6 +27,19 @@
   100% { transform: translate(0.5%, 0) translateZ(0); }
 }
 
+@keyframes arrow-drift {
+  0%, 100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+.animate-arrow-drift {
+  animation: arrow-drift 2.2s ease-in-out infinite;
+}
+
 .noise-overlay {
   position: fixed;
   inset: -10%;
