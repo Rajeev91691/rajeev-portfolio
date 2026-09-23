@@ -189,14 +189,14 @@ function ProjectModal({
         >
           {projects.map((project, idx) => (
             <div
-              className="flex h-full w-full items-center justify-center"
+              className="flex h-full w-full items-center justify-center overflow-hidden"
               key={project.title}
               style={{ backgroundColor: project.color }}
             >
               {project.image && (
                 <img
                   alt={project.title}
-                  className="h-auto max-w-full max-h-full object-contain"
+                  className="h-full w-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-500"
                   src={project.image}
                 />
               )}
